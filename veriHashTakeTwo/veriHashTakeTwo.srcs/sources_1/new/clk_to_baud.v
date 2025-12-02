@@ -29,7 +29,7 @@ module clk_to_baud(
     
     reg [9:0] counter = 10'd0; 
     
-    always @(posedge input_clk, negedge rst) begin 
+    always @(posedge input_clk or negedge rst) begin 
         if (!rst) begin 
             counter <= 10'd0;
             clk_output <= 1'b0;

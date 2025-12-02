@@ -105,27 +105,7 @@ module sha256(
         end
     end
    
-   always @ (posedge clk, negedge rst) begin 
-       if(!rst) begin 
-           a_in <= H0;
-           b_in <= H1;
-           c_in <= H2;
-           d_in <= H3;
-           e_in <= H4;
-           f_in <= H5;
-           g_in <= H6;
-           h_in <= H7;
-       end else if ((S_current == HASHING) && (round != 0)) begin
-           a_in <= a_out;
-           b_in <= b_out;
-           c_in <= c_out;
-           d_in <= d_out;
-           e_in <= e_out;
-           f_in <= f_out;
-           g_in <= g_out;
-           h_in <= h_out;
-       end 
-   end 
+   
    
    always @(*) begin
         case (S_current)
@@ -182,6 +162,17 @@ module sha256(
                         // shift left by one word and insert new W into least-significant 32 bits
                         Flat_W_Arr <= {Flat_W_Arr[479:0], W};
                  end
+                 if (round != 6'd0) begin
+                    // Update working variables each round
+                    a_in <= a_out;
+                    b_in <= b_out;
+                    c_in <= c_out;
+                    d_in <= d_out;
+                    e_in <= e_out;
+                    f_in <= f_out;
+                    g_in <= g_out;
+                    h_in <= h_out;
+                end
 
                     // advance round (stop incrementing after 63)
                     if (round < 6'd63)
