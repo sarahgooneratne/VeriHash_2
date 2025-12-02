@@ -23,33 +23,34 @@
 module digest_next_hex(
     input clk, rst, enable,
     input [255:0] digest_register, 
-    output reg available, digest_end,
+    output reg hex_available, digest_end,
     output reg [3:0] hex_output
     );
     
-    reg [5:0] index = 6'd63; // take complete digest
+    reg [5:0] index = 6'd63;
     
-    always @(posedge clk, negedge rst) begin 
-        if (!rst) begin 
+    always @ (posedge clk, negedge rst) begin
+        if (!rst)begin	
             digest_end <= 1'b0;
-            available <= 1'b0;
+            hex_available <= 1'b0;
             index <= 6'd63;
-        end else begin 
-            available <= 1'b0;
-            digest_end <= 1'b0;
-            
-            if (!enable) begin 
-                available <= 1'b0;
-            end else if (!available && (index == 0)) begin // end of digest has been reached
+        end else begin
+            if (!enable)begin
+                index <= 6'd63;
+                hex_available <= 1'b0;
+                digest_end <= 1'b0;
+            end else if (!hex_available && (index == 0)) begin // We've reached the end! 
                 hex_output <= digest_register[4*index +: 4];
-                available <= 1'b1;
+                hex_available <= 1'b1;
                 digest_end <= 1'b1;
-                index <=6'd63;
-            end else begin 
+            end else if (!hex_available) begin
                 hex_output <= digest_register[4*index +: 4];
-                available <= 1'b1;
+                hex_available <= 1'b1;
                 index <= index - 1'b1;
-            end 
-        end 
+            end else begin 
+                hex_available <= 1'b0;
+                digest_end <= 1'b0;
+            end
+		end
     end
 endmodule
