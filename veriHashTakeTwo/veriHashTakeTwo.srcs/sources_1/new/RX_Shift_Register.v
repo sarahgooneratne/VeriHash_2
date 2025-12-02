@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 12/01/2025 05:55:58 PM
+// Create Date: 12/01/2025 10:10:38 PM
 // Design Name: 
-// Module Name: ch
+// Module Name: RX_Shift_Register
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,10 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module ch(
-    input [31:0] E, F, G, 
-    output [31:0] Ch_Out
+module RX_Shift_Register(
+
     );
-    
-    assign Ch_Out = (E & F) ^ ((~E) & G);
 endmodule
