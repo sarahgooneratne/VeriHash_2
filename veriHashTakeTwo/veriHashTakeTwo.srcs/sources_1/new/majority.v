@@ -18,15 +18,13 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-
-
 module majority(
     input [31:0] A,
     input [31:0] B,
     input [31:0] C,
-    output Majority_Out
+    output [31:0] Majority_Out
     );
     
-    assign Majority_Out = (A & B) | (A & C) | (B & C);
+    assign Majority_Out = (A & B) ^ (A & C) ^ (B & C);
     
 endmodule
